@@ -37,23 +37,22 @@
 	margin-left: -350px;
 }
 
-.planet:nth-of-type(2):before {
+.planet:nth-of-type(2) .planet-content {
 	animation-duration: 30s;
 	animation-direction: reverse;
 	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
 }
 
-.planet:before {
-	text-align: center;
-	line-height: 5rem;
-	align-items: middle;
+.planet .planet-content {
 	animation: orbit 20s linear infinite;
 	animation-direction: reverse;
 	background: linear-gradient(180deg, #2af598 0%, #009efd 100%);
 	border-radius: 50%;
+	color: #212529;
 	display: block;
-	content: "Hello";
+	line-height: 5rem;
 	margin: 0 auto;
+	text-align: center;
 	width: 5rem;
 	height: 5rem;
 }
