@@ -1,42 +1,47 @@
 .top {
 	height: 100vh;
-	background-color: #000000;
+	background: radial-gradient(ellipse at bottom, #1C2837 0%, #050608 100%);
 	position: relative;
 }
 
 .planet {
 	animation: orbit 20s linear infinite;
-	width: 200px;
-	height: 200px;
+	width: 500px;
+	height: 500px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-top: -100px;
-	margin-left: -100px;
-}
-
-.planet:nth-of-type(1) {
-	animation-delay: -20s;
-	animation: orbit 30s linear infinite;
-	height: 500px;
-	width: 500px;
 	margin-top: -250px;
 	margin-left: -250px;
 }
 
+.planet:nth-of-type(1) {
+	animation: orbit 30s linear infinite;
+	height: 700px;
+	width: 700px;
+	margin-top: -350px;
+	margin-left: -350px;
+}
+
 .planet:nth-of-type(1):before {
-	background: orange;
+	animation-duration: 30s;
+	animation-direction: reverse;
+	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
 }
 
 .planet:before {
-	background: #11abe9;
-	box-shadow: 0 -10px 0 -8px grey;
+	text-align: center;
+	line-height: 5rem;
+	align-items: middle;
+	animation: orbit 20s linear infinite;
+	animation-direction: reverse;
+	background: linear-gradient(180deg, #2af598 0%, #009efd 100%);
 	border-radius: 50%;
 	display: block;
-	content: "";
+	content: "Hello";
 	margin: 0 auto;
-	width: 2rem;
-	height: 2rem;
+	width: 5rem;
+	height: 5rem;
 }
 
 @keyframes orbit {
