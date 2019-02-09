@@ -24,10 +24,12 @@
 	margin-left: -3.5rem;
 	margin-right: -3.5rem;
 	background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
-	border-radius: 50%
+	border-radius: 50%;
+	line-height: 7rem;
+	text-align: center;
 }
 
-.planet:nth-of-type(1) {
+.planet:nth-of-type(2) {
 	animation: orbit 30s linear infinite;
 	height: 700px;
 	width: 700px;
@@ -35,7 +37,7 @@
 	margin-left: -350px;
 }
 
-.planet:nth-of-type(1):before {
+.planet:nth-of-type(2):before {
 	animation-duration: 30s;
 	animation-direction: reverse;
 	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
@@ -62,5 +64,25 @@
 	}
 	100% {
 		transform: rotate(-360deg);
+	}
+}
+
+@media screen and (max-width: 768px) {
+	#top {
+		padding: 1rem;
+	}
+	.sun {
+		position: initial;
+		margin: 0;
+	}
+	.planet, .planet:nth-of-type(2) {
+		position: initial;
+		animation: none;
+		margin: 1rem 0 0 0;
+		width: 5rem;
+		height: 5rem;
+	}
+	.planet:before {
+		animation: none;
 	}
 }
