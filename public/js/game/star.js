@@ -10,10 +10,10 @@ function Star(game) {
 		var intersects = false;
 		for (var starIndex in game.stars) {
 			var otherStar = game.stars[starIndex];
-			if (this.x < otherStar.x + ((2 * otherStar.r) + (2 * SINE_ANIMATION_HEIGHT)) &&
-				this.x + ((2 * this.r) + (2 * SINE_ANIMATION_HEIGHT)) > otherStar.x &&
-				this.y < otherStar.y + ((2 * otherStar.r) + (2 * SINE_ANIMATION_HEIGHT)) &&
-				this.y + ((2 * this.r) + (2 * SINE_ANIMATION_HEIGHT)) > otherStar.y) {
+			if (this.x < otherStar.x + ((2 * otherStar.r) + (2 * SINE_ANIMATION_HEIGHT) + STAR_MARGIN) &&
+				this.x + ((2 * this.r) + (2 * SINE_ANIMATION_HEIGHT) + STAR_MARGIN) > otherStar.x &&
+				this.y < otherStar.y + ((2 * otherStar.r) + (2 * SINE_ANIMATION_HEIGHT) + STAR_MARGIN) &&
+				this.y + ((2 * this.r) + (2 * SINE_ANIMATION_HEIGHT) + STAR_MARGIN) > otherStar.y) {
 				intersects = true;
 				break;
 			}
@@ -36,6 +36,7 @@ function Star(game) {
 	this.selected = false;
 	this.frozen = false;
 	this.probed = false;
+	this.researchable = false;
 };
 
 Star.prototype.probe = function(mouse) {
@@ -58,7 +59,7 @@ Star.prototype.update = function(mouse) {
 	// animation
 	//
 
-	if (!this.probed) {
+	if (!this.probed && !this.frozen) {
 		this._animationTime += 0.01;
 
 		this.yOffset = SINE_ANIMATION_HEIGHT * Math.sin(this._animationTime);
@@ -72,8 +73,10 @@ Star.prototype.update = function(mouse) {
 Star.prototype.draw = function(ctx) {
 	var outlineColor = "white";
 
-	if (this.probed) {
+	if (this.probed && !this.researchable) {
 		outlineColor = "red";
+	} else if (this.frozen && !this.researchable) {
+		outlineColor = "gray";
 	} else if (this._hover || this.selected) {
 		outlineColor = "yellow";
 	}
