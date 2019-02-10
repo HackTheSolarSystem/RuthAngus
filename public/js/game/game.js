@@ -4,6 +4,7 @@ function Game(querySelector) {
 	this.stars = [];
 	this.mouse = { x: 0, y: 0, down: false };
 	this.ui = [];
+	this.state = STATE_PROBE;
 
 	this._boundDrawFrame = this.drawFrame.bind(this);
 	this._boundMouseEvent = this.onMouseEvent.bind(this);
@@ -12,7 +13,7 @@ function Game(querySelector) {
 	this.canvas.addEventListener("mousemove", this._boundMouseEvent);
 	this.canvas.addEventListener("mouseup", this._boundMouseEvent);
 
-	this.ui.push(new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Fire", function() {
+	this.probeButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Probe", function() {
 		var stars = window.game.stars;
 		var selectedStar;
 		for (var starIndex in stars) {
@@ -24,15 +25,24 @@ function Game(querySelector) {
 		}
 
 		if (selectedStar) {
-			selectedStar.shoot();
+			selectedStar.probe();
+
+			window.game.laserShotsLeft -= 1;
+
+			if (window.game.laserShotsLeft == 0) {
+				window.game.state = STATE_GUESS;
+				window.game.probeButton.enabled = false;
+			}
 		} else {
 			alert("You must select a star.");
 		}
-	}));
+	});
+
+	this.ui.push(this.probeButton);
 }
 
 Game.prototype.startRound = function() {
-	this.laserShotsLeft = 5;
+	this.laserShotsLeft = 3;
 	this.stars = [];
 	for (var i = 0; i < 5; i++) {
 		this.stars.push(new Star(this));
@@ -64,8 +74,7 @@ Game.prototype.drawFrame = function() {
 	// draw
 	//
 
-	this.ctx.fillStyle = "white";
-	this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	this.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 	for (var uiIndex in this.ui) {
 		this.ui[uiIndex].draw(this.ctx);
@@ -76,8 +85,18 @@ Game.prototype.drawFrame = function() {
 	}
 
 	this.ctx.font = "18px Quicksand";
-	this.ctx.fillStyle = "black";
-	this.ctx.fillText("Select a star to fire at", CANVAS_WIDTH / 2, 10 + 8);
+	this.ctx.fillStyle = "white";
+	this.ctx.textAlign = "center";
+	this.ctx.textBaseline = "middle";
+	if (this.state == STATE_PROBE) {
+		this.ctx.fillText("Select a star to probe at", CANVAS_WIDTH / 2, 10 + 8);
+
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "bottom";
+		this.ctx.fillText("Shots left: " + this.laserShotsLeft, 10, CANVAS_HEIGHT - 10);
+	} else if (this.state == STATE_GUESS) {
+		this.ctx.fillText("Guess stuff", CANVAS_WIDTH / 2, 10 + 8);
+	}
 
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
 	this.ctx.beginPath();

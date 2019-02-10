@@ -1,9 +1,9 @@
 html, body {
-	background: black;
+	background: white;
 }
 
 #game {
-	background: white;
+	background: black;
 	display: block;
 	margin: 1rem auto;
 	width: 800px;
