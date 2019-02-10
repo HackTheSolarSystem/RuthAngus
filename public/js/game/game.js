@@ -6,8 +6,11 @@ function Game(querySelector) {
 	this.ui = [];
 	this.state = STATE_PROBE;
 	this.selectedStarIndex = -1;
+	this.probedStarIndex = -1;
 
 	this._probeAngle = 0;
+	this._laserAnimating = false;
+	this._laserTime = 0;
 	this._boundDrawFrame = this.drawFrame.bind(this);
 	this._boundMouseEvent = this.onMouseEvent.bind(this);
 
@@ -27,7 +30,10 @@ function Game(querySelector) {
 		}
 
 		if (selectedStar) {
+			window.game.probedStarIndex = window.game.selectedStarIndex;
 			window.game.selectedStarIndex = -1;
+			// window.game._laserAnimating = true;
+			// window.game._laserTime = 0;
 
 			selectedStar.probe();
 
@@ -123,6 +129,10 @@ Game.prototype.onMouseEvent = function (e) {
 	this.mouse.down = (e.buttons == 1);
 };
 
+Game.prototype.lerp = function (from, to, time) {
+	return ((to - from) * time) + from;
+};
+
 Game.prototype.drawFrame = function () {
 	//
 	// update
@@ -147,17 +157,44 @@ Game.prototype.drawFrame = function () {
 			probeTargetY = this.mouse.y;
 		} else {
 			probeTargetX = this.stars[this.selectedStarIndex].x;
-			probeTargetY = this.stars[this.selectedStarIndex].y;
+			probeTargetY = this.stars[this.selectedStarIndex].y + this.stars[this.selectedStarIndex].yOffset;
 		}
 	}
 
 	this._probeAngle = Math.atan2(probeY - probeTargetY, probeX - probeTargetX) - (Math.PI / 2);
+
+	var laserX = 0;
+	var laserY = 0;
+
+	if (this._laserAnimating) {
+		laserX = this.lerp(probeX, this.stars[this.probedStarIndex].x, this._laserTime);
+		laserY = this.lerp(probeY, this.stars[this.probedStarIndex].y + this.stars[this.probedStarIndex].yOffset, this._laserTime);
+
+		this._laserTime += 0.01;
+		if (this._laserTime >= 1) {
+			this._laserAnimating = false;
+		}
+	}
 
 	//
 	// draw
 	//
 
 	this.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+	if (this.state == STATE_PROBE) {
+		this.ctx.translate(probeX, probeY);
+		this.ctx.rotate(this._probeAngle);
+		this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+	}
+
+	if (this._laserAnimating) {
+		this.ctx.translate(laserX, laserY);
+		this.ctx.rotate(0);
+		this.ctx.drawImage(this.assets.img.laser, 0, 0);
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+	}
 
 	for (var uiIndex in this.ui) {
 		this.ui[uiIndex].draw(this.ctx);
@@ -179,13 +216,6 @@ Game.prototype.drawFrame = function () {
 		this.ctx.fillText("Probes left: " + this.probesLeft, 10, CANVAS_HEIGHT - 10);
 	} else if (this.state == STATE_GUESS) {
 		this.ctx.fillText("Where do you want to pursue research? Select a star.", CANVAS_WIDTH / 2, 10 + 8);
-	}
-
-	if (this.state == STATE_PROBE) {
-		this.ctx.translate(probeX, probeY);
-		this.ctx.rotate(this._probeAngle);
-		this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 	}
 
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
