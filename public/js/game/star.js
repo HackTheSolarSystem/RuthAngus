@@ -1,5 +1,7 @@
 function Star(game) {
-	this.r = (20 * Math.random()) + 20;
+	this.r = ((STAR_RADIUS_MAX - STAR_RADIUS_MIN) * Math.random()) + STAR_RADIUS_MIN;
+	this.soundFrequency = (900 / (STAR_RADIUS_MAX - STAR_RADIUS_MIN)) * (STAR_RADIUS_MAX - this.r) + 100;
+	this.soundFrequency = Math.round(this.soundFrequency * 100) / 100;
 
 	while (true) {
 		this.x = ((CANVAS_WIDTH - (2 * this.r)) * Math.random()) + this.r;
@@ -26,18 +28,18 @@ function Star(game) {
 	this.fill.addColorStop(0, "#f6d365");
 	this.fill.addColorStop(1, "#fda085");
 
-	this.yOffset = 0;
-	this.animationTime = 2 * Math.PI * Math.random();
-	this.soundFrequency = (Math.random() * 900) + 100;
-	this.soundFrequency = Math.round(this.soundFrequency * 100) / 100;
+	this._animationTime = 2 * Math.PI * Math.random();
 	this._hover = false;
-	this.selected = false;
-	this._probed = false;
 	this._lastMouseDown = false;
+
+	this.yOffset = 0;
+	this.selected = false;
+	this.frozen = false;
+	this.probed = false;
 };
 
 Star.prototype.probe = function(mouse) {
-	this._probed = true;
+	this.probed = true;
 };
 
 Star.prototype.update = function(mouse) {
@@ -56,13 +58,13 @@ Star.prototype.update = function(mouse) {
 	// animation
 	//
 
-	if (!this._probed) {
-		this.animationTime += 0.01;
+	if (!this.probed) {
+		this._animationTime += 0.01;
 
-		this.yOffset = SINE_ANIMATION_HEIGHT * Math.sin(this.animationTime);
+		this.yOffset = SINE_ANIMATION_HEIGHT * Math.sin(this._animationTime);
 
-		if (this.animationTime >= 2 * Math.PI) {
-			this.animationTime = 0;
+		if (this._animationTime >= 2 * Math.PI) {
+			this._animationTime = 0;
 		}
 	}
 };
@@ -70,7 +72,7 @@ Star.prototype.update = function(mouse) {
 Star.prototype.draw = function(ctx) {
 	var outlineColor = "white";
 
-	if (this._probed) {
+	if (this.probed) {
 		outlineColor = "red";
 	} else if (this._hover || this.selected) {
 		outlineColor = "yellow";
@@ -87,7 +89,7 @@ Star.prototype.draw = function(ctx) {
 	ctx.arc(this.x, this.y + this.yOffset, this.r, 0, 2 * Math.PI);
 	ctx.stroke();
 
-	if (this._probed) {
+	if (this.probed) {
 		ctx.fillStyle = "white";
 		ctx.font = "16px Quicksand";
 		ctx.textAlign = "top";
