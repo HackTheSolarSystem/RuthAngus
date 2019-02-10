@@ -24,3 +24,7 @@ html, body {
 .fr {
 	float: right;
 }
+
+.top-container {
+	z-index: 2;
+}
