@@ -5,6 +5,7 @@ function Game(querySelector) {
 	this.mouse = { x: 0, y: 0, down: false };
 	this.ui = [];
 	this.state = STATE_PROBE;
+	this.selectedStarIndex = -1;
 
 	this._probeAngle = 0;
 	this._boundDrawFrame = this.drawFrame.bind(this);
@@ -26,6 +27,8 @@ function Game(querySelector) {
 		}
 
 		if (selectedStar) {
+			window.game.selectedStarIndex = -1;
+
 			selectedStar.probe();
 
 			window.game.probesLeft -= 1;
@@ -34,7 +37,7 @@ function Game(querySelector) {
 				window.game.startResearchPrompt();
 			}
 		} else {
-			$('#must-select-planet').modal()
+			$("#must-select-planet").modal();
 		}
 	});
 	this.researchButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Research", function () {
@@ -57,13 +60,13 @@ function Game(querySelector) {
 
 		if (selectedStar) {
 			if (selectedStarIndex == lowestFrequencyIndex) {
-				$('#win-modal').modal()
+				$("#win-modal").modal();
 			} else {
-				$('#lose-modal').modal()
+				$("#lose-modal").modal();
 			}
 			game.startRound();
 		} else {
-			$('#must-select-planet').modal()
+			$("#must-select-planet").modal();
 		}
 	});
 	this.researchButton.enabled = false;
@@ -87,6 +90,9 @@ Game.prototype.loadAssets = function (callback) {
 Game.prototype.startRound = function () {
 	this.state = STATE_PROBE;
 	this.probesLeft = PROBE_COUNT_MAX;
+	this.probeButton.enabled = true;
+	this.researchButton.enabled = false;
+	this.selectedStarIndex = -1;
 	this.stars = [];
 	for (var i = 0; i < STAR_COUNT; i++) {
 		this.stars.push(new Star(this));
@@ -123,19 +129,29 @@ Game.prototype.drawFrame = function () {
 	//
 
 	for (var uiIndex in this.ui) {
-		this.ui[uiIndex].update(this.mouse);
+		this.ui[uiIndex].update(this, this.mouse, uiIndex);
 	}
 
 	for (var starIndex in this.stars) {
-		this.stars[starIndex].update(this.mouse);
+		this.stars[starIndex].update(this, this.mouse, starIndex);
 	}
 
 	var probeX = ((CANVAS_WIDTH - PROBE_WIDTH) / 2) + (PROBE_WIDTH / 2);
 	var probeY = (CANVAS_HEIGHT - 80);
+	var probeTargetX = this.mouse.x;
+	var probeTargetY = this.mouse.y;
 
 	if (this.state == STATE_PROBE) {
-		this._probeAngle = Math.atan2(probeY - this.mouse.y, probeX - this.mouse.x) - (Math.PI / 2);
+		if (this.selectedStarIndex == -1) {
+			probeTargetX = this.mouse.x;
+			probeTargetY = this.mouse.y;
+		} else {
+			probeTargetX = this.stars[this.selectedStarIndex].x;
+			probeTargetY = this.stars[this.selectedStarIndex].y;
+		}
 	}
+
+	this._probeAngle = Math.atan2(probeY - probeTargetY, probeX - probeTargetX) - (Math.PI / 2);
 
 	//
 	// draw
@@ -156,7 +172,7 @@ Game.prototype.drawFrame = function () {
 	this.ctx.textAlign = "center";
 	this.ctx.textBaseline = "middle";
 	if (this.state == STATE_PROBE) {
-		this.ctx.fillText("Select a star to probe", CANVAS_WIDTH / 2, 10 + 8);
+		this.ctx.fillText("Select a star to probe.", CANVAS_WIDTH / 2, 10 + 8);
 
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "bottom";
@@ -165,10 +181,12 @@ Game.prototype.drawFrame = function () {
 		this.ctx.fillText("Where do you want to pursue research? Select a star.", CANVAS_WIDTH / 2, 10 + 8);
 	}
 
-	this.ctx.translate(probeX, probeY);
-	this.ctx.rotate(this._probeAngle);
-	this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
-	this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+	if (this.state == STATE_PROBE) {
+		this.ctx.translate(probeX, probeY);
+		this.ctx.rotate(this._probeAngle);
+		this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+	}
 
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
 	this.ctx.beginPath();
