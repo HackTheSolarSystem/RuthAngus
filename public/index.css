@@ -2,6 +2,8 @@
 	height: 100vh;
 	background: radial-gradient(ellipse at bottom, #1C2837 0%, #050608 100%);
 	position: relative;
+	overflow: hidden;
+	margin: 0;
 }
 
 .sun {
