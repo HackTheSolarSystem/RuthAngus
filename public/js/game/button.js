@@ -1,4 +1,4 @@
-function Button(ctx, x, y, label, callback) {
+function Button(game, x, y, label, callback) {
 	this.x = x;
 	this.y = y;
 	this.w = 100;
