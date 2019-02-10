@@ -43,7 +43,7 @@ Star.prototype.probe = function(mouse) {
 	this.probed = true;
 };
 
-Star.prototype.update = function(mouse) {
+Star.prototype.update = function(game, mouse, index) {
 	//
 	// mouse events
 	//
@@ -51,6 +51,9 @@ Star.prototype.update = function(mouse) {
 
 	if (mouse.down && !this._lastMouseDown) {
 		this.selected = this._hover;
+		if (this.selected) {
+			game.selectedStarIndex = index;
+		}
 	}
 
 	this._lastMouseDown = mouse.down;

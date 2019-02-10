@@ -11,7 +11,7 @@ function Button(game, x, y, label, callback) {
 	this._lastMouseDown = false;
 };
 
-Button.prototype.update = function(mouse) {
+Button.prototype.update = function(game, mouse, index) {
 	if (!this.enabled) { return; }
 
 	this._hover = (
