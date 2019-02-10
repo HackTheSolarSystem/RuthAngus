@@ -1,0 +1,11 @@
+html, body {
+	background: black;
+}
+
+#game {
+	background: white;
+	display: block;
+	margin: 1rem auto;
+	width: 800px;
+	height: 400px;
+}
