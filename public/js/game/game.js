@@ -182,13 +182,6 @@ Game.prototype.drawFrame = function () {
 
 	this.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-	if (this.state == STATE_PROBE) {
-		this.ctx.translate(probeX, probeY);
-		this.ctx.rotate(this._probeAngle);
-		this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-	}
-
 	if (this._laserAnimating) {
 		this.ctx.translate(laserX, laserY);
 		this.ctx.rotate(0);
@@ -202,6 +195,13 @@ Game.prototype.drawFrame = function () {
 
 	for (var starIndex in this.stars) {
 		this.stars[starIndex].draw(this.ctx);
+	}
+
+	if (this.state == STATE_PROBE) {
+		this.ctx.translate(probeX, probeY);
+		this.ctx.rotate(this._probeAngle);
+		this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 	}
 
 	this.ctx.font = "18px Quicksand";
@@ -233,7 +233,7 @@ Game.prototype.drawFrame = function () {
 window.addEventListener("load", function () {
 	particlesJS.load("particles", window.BASE_URL + "/public/particlesjs-config.json", function () { });
 
-	window.game = new Game("canvas");
+	window.game = new Game("#game");
 	game.loadAssets(function () {
 		document.querySelector("#loadingCover").remove();
 		game.startRound();
