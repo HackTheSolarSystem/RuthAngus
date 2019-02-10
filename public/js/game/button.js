@@ -5,12 +5,15 @@ function Button(game, x, y, label, callback) {
 	this.h = 30;
 	this.label = label;
 	this.font = "14px Quicksand";
+	this.enabled = true;
 	this.callback = callback;
 	this._hover = false;
 	this._lastMouseDown = false;
 };
 
 Button.prototype.update = function(mouse) {
+	if (!this.enabled) { return; }
+
 	this._hover = (
 		(mouse.x > this.x && mouse.x < (this.x + this.w)) &&
 		(mouse.y > this.y && mouse.y < (this.y + this.h))
@@ -24,7 +27,9 @@ Button.prototype.update = function(mouse) {
 };
 
 Button.prototype.draw = function(ctx) {
-	ctx.strokeStyle = (this._hover ? "yellow" : "black");
+	if (!this.enabled) { return; }
+
+	ctx.strokeStyle = (this._hover ? "yellow" : "white");
 	ctx.lineWidth = 5;
 	ctx.fillStyle = "#cccccc";
 

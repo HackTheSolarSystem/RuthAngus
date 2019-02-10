@@ -22,19 +22,22 @@ function Star(game) {
 		}
 	}
 
+	this.fill = game.ctx.createLinearGradient(this.x, this.y, this.x + 2 * this.r, this.y);
+	this.fill.addColorStop(0, "#f6d365");
+	this.fill.addColorStop(1, "#fda085");
+
 	this.yOffset = 0;
 	this.animationTime = 2 * Math.PI * Math.random();
-	this.laserSpeed = Math.random() * 10;
-	this.laserSpeed = Math.round(this.laserSpeed * 100) / 100;
-	this.color = "orange";
+	this.soundFrequency = (Math.random() * 900) + 100;
+	this.soundFrequency = Math.round(this.soundFrequency * 100) / 100;
 	this._hover = false;
 	this.selected = false;
-	this._shot = false;
+	this._probed = false;
 	this._lastMouseDown = false;
 };
 
-Star.prototype.shoot = function(mouse) {
-	this._shot = true;
+Star.prototype.probe = function(mouse) {
+	this._probed = true;
 };
 
 Star.prototype.update = function(mouse) {
@@ -53,7 +56,7 @@ Star.prototype.update = function(mouse) {
 	// animation
 	//
 
-	if (!this._shot) {
+	if (!this._probed) {
 		this.animationTime += 0.01;
 
 		this.yOffset = SINE_ANIMATION_HEIGHT * Math.sin(this.animationTime);
@@ -65,15 +68,15 @@ Star.prototype.update = function(mouse) {
 };
 
 Star.prototype.draw = function(ctx) {
-	var outlineColor = "black";
+	var outlineColor = "white";
 
-	if (this._shot) {
+	if (this._probed) {
 		outlineColor = "red";
 	} else if (this._hover || this.selected) {
 		outlineColor = "yellow";
 	}
 
-	ctx.fillStyle = this.color;
+	ctx.fillStyle = this.fill;
 	ctx.beginPath();
 	ctx.arc(this.x, this.y + this.yOffset, this.r, 0, 2 * Math.PI);
 	ctx.fill();
@@ -84,11 +87,11 @@ Star.prototype.draw = function(ctx) {
 	ctx.arc(this.x, this.y + this.yOffset, this.r, 0, 2 * Math.PI);
 	ctx.stroke();
 
-	if (this._shot) {
-		ctx.fillStyle = "black";
+	if (this._probed) {
+		ctx.fillStyle = "white";
 		ctx.font = "16px Quicksand";
 		ctx.textAlign = "top";
 		ctx.textBaseline = "middle";
-		ctx.fillText(this.laserSpeed + " seconds", this.x, this.y + this.yOffset + this.r + 15);
+		ctx.fillText(this.soundFrequency + " uHz", this.x, this.y + this.yOffset + this.r + 15);
 	}
 };
