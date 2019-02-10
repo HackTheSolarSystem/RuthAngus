@@ -1,6 +1,6 @@
 function Star(game) {
-	this.r = ((STAR_RADIUS_MAX - STAR_RADIUS_MIN) * Math.random()) + STAR_RADIUS_MIN;
-	this.soundFrequency = (900 / (STAR_RADIUS_MAX - STAR_RADIUS_MIN)) * (STAR_RADIUS_MAX - this.r) + 100;
+	this.r = (STAR_RADIUS_RANGE * Math.random()) + STAR_RADIUS_MIN;
+	this.soundFrequency = (STAR_FREQUENCY_RANGE / STAR_RADIUS_RANGE) * (STAR_RADIUS_MAX - this.r) + STAR_FREQUENCY_MIN;
 	this.soundFrequency = Math.round(this.soundFrequency * 100) / 100;
 
 	while (true) {

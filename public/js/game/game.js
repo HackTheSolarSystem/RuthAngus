@@ -33,11 +33,36 @@ function Game(querySelector) {
 				window.game.startResearchPrompt();			
 			}
 		} else {
-			alert("You must select a star.");
+			alert("You must select a star to probe.");
 		}
 	});
 	this.researchButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Research", function() {
-		alert("science");
+		var stars = window.game.stars;
+		var selectedStar;
+		var selectedStarIndex;
+		var lowestFrequency = STAR_FREQUENCY_MAX + 1;
+		var lowestFrequencyIndex = -1;
+		for (var starIndex in stars) {
+			var star = stars[starIndex];
+			if (star.selected) {
+				selectedStar = star;
+				selectedStarIndex = starIndex;
+			}
+			if (star.soundFrequency < lowestFrequency) {
+				lowestFrequency = star.soundFrequency;
+				lowestFrequencyIndex = starIndex;
+			}
+		}
+
+		if (selectedStar) {
+			if (selectedStarIndex == lowestFrequencyIndex) {
+				alert("You win");
+			} else {
+				alert("You lose");
+			}
+		} else {
+			alert("You must select a star to pursue research on.");
+		}
 	});
 	this.researchButton.enabled = false;
 
