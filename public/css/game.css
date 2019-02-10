@@ -10,7 +10,7 @@ html, body {
 	position: relative;
 }
 
-#game, #particles {
+#game, #particles, #loadingCover {
 	display: block;
 	width: 800px;
 	height: 400px;
@@ -21,4 +21,11 @@ html, body {
 
 #game {
 	z-index: 1;
+}
+
+#loadingCover {
+	color: white;
+	text-align: center;
+	margin-top: 1rem;
+	z-index: 2;
 }
