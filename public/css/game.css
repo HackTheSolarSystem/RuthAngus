@@ -21,6 +21,7 @@ html, body {
 
 #game {
 	z-index: 1;
+	cursor: none;
 }
 
 #loadingCover {
@@ -28,4 +29,10 @@ html, body {
 	text-align: center;
 	margin-top: 1rem;
 	z-index: 2;
+}
+
+.win-modal-body {
+	background: radial-gradient(ellipse at bottom, #1C2837 0%, #050608 100%);
+	text-align: center;
+	color: white;
 }

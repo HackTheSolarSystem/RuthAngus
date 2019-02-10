@@ -5,10 +5,89 @@ css: [ "public/css/game.css" ]
 js: [ "public/js/game/consts.js", "public/js/game/button.js", "public/js/game/star.js", "public/js/game/game.js" ]
 ---
 <script>
-window.BASE_URL = "{{ site.baseurl }}";
+	window.BASE_URL = "{{ site.baseurl }}";
 </script>
 <div id="gameContainer">
 	<div id="loadingCover">Loading...</div>
 	<div id="particles"></div>
 	<canvas id="game" width="800px" height="400px"></canvas>
+</div>
+
+<div class="modal fade" id="win-modal" tabindex="-1" role="dialog" aria-labelledby="win-modal-label" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="win-modal-label">Congratulations!</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body win-modal-body">
+				<h1>You Win!</h1>
+				<p class="lead">You selected the right planet to explore.</p>
+				<p> What you are probing is the acoustic oscillations in stars, which is their speed of sound. The
+					acoustic oscillations can tell us about the density and size of an object. As stars get older, they
+					get less dense and bigger. The oscillations in the older stars are deeper (lower frequency). Take
+					for example a cello. It has a low sound because its oscillation cavity is bigger and it is more
+					hollow. The stellar oscillation frequencies can therefore tell us the age of stars. Older stars are
+					less active, so planet signals are easier to detect. Selecting the oldest star would allow for the
+					best potential research. As a result, you must select the oldest star, which is the star with the
+					deepest oscillations in order to win.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="win-modal" tabindex="-1" role="dialog" aria-labelledby="lose-modal-label"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="lose-modal-label">Sorry, you lost.</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body win-modal-body">
+				<h1>You Lose!</h1>
+				<p class="lead">You selected the wrong planet to explore.</p>
+				<p> What you are probing is the acoustic oscillations in stars, which is their speed of sound. The
+					acoustic oscillations can tell us about the density and size of an object. As stars get older, they
+					get less dense and bigger. The oscillations in the older stars are deeper (lower frequency). Take
+					for example a cello. It has a low sound because its oscillation cavity is bigger and it is more
+					hollow. The stellar oscillation frequencies can therefore tell us the age of stars. Older stars are
+					less active, so planet signals are easier to detect. Selecting the oldest star would allow for the
+					best potential research. As a result, you must select the oldest star, which is the star with the
+					deepest oscillations in order to win.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="must-select-planet"
+	aria-labelledby="must-select-planet-label" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="must-select-planet-label">Warning</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>You must select a planet to continue</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
