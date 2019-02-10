@@ -6,6 +6,7 @@ function Game(querySelector) {
 	this.ui = [];
 	this.state = STATE_PROBE;
 
+	this._probeAngle = 0;
 	this._boundDrawFrame = this.drawFrame.bind(this);
 	this._boundMouseEvent = this.onMouseEvent.bind(this);
 
@@ -60,6 +61,7 @@ function Game(querySelector) {
 			} else {
 				alert("You lose");
 			}
+			game.startRound();
 		} else {
 			alert("You must select a star to pursue research on.");
 		}
@@ -70,7 +72,20 @@ function Game(querySelector) {
 	this.ui.push(this.researchButton);
 }
 
+Game.prototype.loadAssets = function(callback) {
+	this.loader = new PxLoader();
+	this.loader.addCompletionListener(callback);
+	this.assets = {
+		img: {
+			laser: this.loader.addImage(window.BASE_URL + "/public/img/laser.png"),
+			probe: this.loader.addImage(window.BASE_URL + "/public/img/probe.png")
+		}
+	};
+	this.loader.start();
+};
+
 Game.prototype.startRound = function() {
+	this.state = STATE_PROBE;
 	this.probesLeft = PROBE_COUNT_MAX;
 	this.stars = [];
 	for (var i = 0; i < STAR_COUNT; i++) {
@@ -115,6 +130,13 @@ Game.prototype.drawFrame = function() {
 		this.stars[starIndex].update(this.mouse);
 	}
 
+	var probeX = ((CANVAS_WIDTH - PROBE_WIDTH) / 2) + (PROBE_WIDTH / 2);
+	var probeY = (CANVAS_HEIGHT - 80);
+
+	if (this.state == STATE_PROBE) {
+		this._probeAngle = Math.atan2(probeY - this.mouse.y, probeX - this.mouse.x) - (Math.PI / 2);
+	}
+
 	//
 	// draw
 	//
@@ -143,6 +165,11 @@ Game.prototype.drawFrame = function() {
 		this.ctx.fillText("Where do you want to pursue research? Select a star.", CANVAS_WIDTH / 2, 10 + 8);
 	}
 
+	this.ctx.translate(probeX, probeY);
+	this.ctx.rotate(this._probeAngle);
+	this.ctx.drawImage(this.assets.img.probe, -(PROBE_WIDTH / 2), -(PROBE_HEIGHT / 2), PROBE_WIDTH, PROBE_HEIGHT);
+	this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
 	this.ctx.beginPath();
 	this.ctx.arc(this.mouse.x, this.mouse.y, 2, 0, 2 * Math.PI);
@@ -159,6 +186,9 @@ window.addEventListener("load", function() {
 	particlesJS.load("particles", window.BASE_URL + "/public/particlesjs-config.json", function() {});
 
 	window.game = new Game("canvas");
-	game.startRound();
-	game.drawFrame();
+	game.loadAssets(function() {
+		document.querySelector("#loadingCover").remove();
+		game.startRound();
+		game.drawFrame();
+	});
 });
