@@ -6,13 +6,9 @@
 
 .planet {
 	animation: orbit 20s linear infinite;
-	width: 500px;
-	height: 500px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-top: -250px;
-	margin-left: -250px;
 }
 
 .sun {
@@ -29,24 +25,9 @@
 	text-align: center;
 }
 
-.planet:nth-of-type(2) {
-	animation: orbit 30s linear infinite;
-	height: 700px;
-	width: 700px;
-	margin-top: -350px;
-	margin-left: -350px;
-}
-
-.planet:nth-of-type(2) .planet-content {
-	animation-duration: 30s;
-	animation-direction: reverse;
-	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
-}
-
 .planet .planet-content {
 	animation: orbit 20s linear infinite;
 	animation-direction: reverse;
-	background: linear-gradient(180deg, #2af598 0%, #009efd 100%);
 	border-radius: 50%;
 	color: #212529;
 	display: block;
@@ -55,6 +36,49 @@
 	text-align: center;
 	width: 5rem;
 	height: 5rem;
+}
+
+.planet.paused, .planet.paused .planet-content {
+	animation-play-state: paused;
+}
+
+#planet1 {
+	animation-duration: 20s;
+	width: 500px;
+	height: 500px;
+	margin-top: -250px;
+	margin-left: -250px;
+}
+
+#planet1 .planet-content {
+	animation-duration: 20s;
+	background: linear-gradient(180deg, #2af598 0%, #009efd 100%);
+}
+
+#planet2 {
+	animation-duration: 30s;
+	height: 700px;
+	width: 700px;
+	margin-top: -350px;
+	margin-left: -350px;
+}
+
+#planet2 .planet-content {
+	animation-duration: 30s;
+	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
+}
+
+#planet3 {
+	animation-duration: 25s;
+	height: 900px;
+	width: 900px;
+	margin-top: -450px;
+	margin-left: -450px;
+}
+
+#planet3 .planet-content {
+	animation-duration: 25s;
+	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
 }
 
 @keyframes orbit {
@@ -74,14 +98,14 @@
 		position: initial;
 		margin: 0;
 	}
-	.planet, .planet:nth-of-type(2) {
+	.planet {
 		position: initial;
 		animation: none;
 		margin: 1rem 0 0 0;
 		width: 5rem;
 		height: 5rem;
 	}
-	.planet:before {
+	.planet .planet-content {
 		animation: none;
 	}
 }
