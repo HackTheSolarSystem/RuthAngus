@@ -15,6 +15,16 @@ var STAR_FREQUENCY_MIN = 100;
 var STAR_FREQUENCY_MAX = 1000;
 var STAR_FREQUENCY_RANGE = STAR_FREQUENCY_MAX - STAR_FREQUENCY_MIN;
 
+var STAR_GRADIENTS = [
+	[ "#f6d365", "#fda085" ],
+	[ "#fccb90", "#d57eeb" ],
+	[ "#a1c4fd", "#c2e9fb" ],
+	[ "#d4fc79", "#96e6a1" ],
+	[ "#84fab0", "#8fd3f4" ],
+	[ "#a18cd1", "#fbc2eb" ],
+	[ "#fad0c4", "#ffd1ff" ]
+];
+
 var PROBE_WIDTH = 40;
 var PROBE_HEIGHT = 40;
 var PROBE_COUNT_MAX = 4;

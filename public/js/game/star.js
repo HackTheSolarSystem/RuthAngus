@@ -24,9 +24,11 @@ function Star(game) {
 		}
 	}
 
+	var gradient = STAR_GRADIENTS[Math.round((STAR_GRADIENTS.length - 1) * Math.random())];
+
 	this.fill = game.ctx.createLinearGradient(this.x, this.y, this.x + 2 * this.r, this.y);
-	this.fill.addColorStop(0, "#f6d365");
-	this.fill.addColorStop(1, "#fda085");
+	this.fill.addColorStop(0, gradient[0]);
+	this.fill.addColorStop(1, gradient[1]);
 
 	this._animationTime = 2 * Math.PI * Math.random();
 	this._hover = false;
