@@ -1,7 +1,7 @@
 function Game(querySelector) {
 	this.canvas = document.querySelector(querySelector);
 	this.ctx = this.canvas.getContext("2d");
-	this.planets = [];
+	this.stars = [];
 	this.mouse = { x: 0, y: 0, down: false };
 	this.ui = [];
 
@@ -12,16 +12,30 @@ function Game(querySelector) {
 	this.canvas.addEventListener("mousemove", this._boundMouseEvent);
 	this.canvas.addEventListener("mouseup", this._boundMouseEvent);
 
-	this.ui.push(new Button(this.ctx, 10, CANVAS_HEIGHT - 30 - 10, "Fire", function() {
-		alert("pew");
+	this.ui.push(new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Fire", function() {
+		var stars = window.game.stars;
+		var selectedStar;
+		for (var starIndex in stars) {
+			var star = stars[starIndex];
+			if (star.selected) {
+				selectedStar = star;
+				break;
+			}
+		}
+
+		if (selectedStar) {
+			selectedStar.shoot();
+		} else {
+			alert("You must select a star.");
+		}
 	}));
 }
 
 Game.prototype.startRound = function() {
 	this.laserShotsLeft = 5;
-	this.planets = [];
+	this.stars = [];
 	for (var i = 0; i < 5; i++) {
-		this.planets.push(new Planet(this.ctx));
+		this.stars.push(new Star(this));
 	}
 };
 
@@ -38,12 +52,12 @@ Game.prototype.drawFrame = function() {
 	// update
 	//
 
-	for (var planetIndex in this.planets) {
-		this.planets[planetIndex].update(this.mouse);
-	}
-
 	for (var uiIndex in this.ui) {
 		this.ui[uiIndex].update(this.mouse);
+	}
+
+	for (var starIndex in this.stars) {
+		this.stars[starIndex].update(this.mouse);
 	}
 
 	//
@@ -53,13 +67,17 @@ Game.prototype.drawFrame = function() {
 	this.ctx.fillStyle = "white";
 	this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-	for (var planetIndex in this.planets) {
-		this.planets[planetIndex].draw(this.ctx);
-	}
-
 	for (var uiIndex in this.ui) {
 		this.ui[uiIndex].draw(this.ctx);
 	}
+
+	for (var starIndex in this.stars) {
+		this.stars[starIndex].draw(this.ctx);
+	}
+
+	this.ctx.font = "18px Quicksand";
+	this.ctx.fillStyle = "black";
+	this.ctx.fillText("Select a star to fire at", CANVAS_WIDTH / 2, 10 + 8);
 
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
 	this.ctx.beginPath();
@@ -74,7 +92,7 @@ Game.prototype.drawFrame = function() {
 };
 
 window.addEventListener("load", function() {
-	var game = new Game("canvas");
+	window.game = new Game("canvas");
 	game.startRound();
 	game.drawFrame();
 });
