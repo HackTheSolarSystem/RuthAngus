@@ -28,6 +28,10 @@
 	left: 50%;
 }
 
+.planet-content:hover {
+	animation-play-state: paused;
+}
+
 .planet .planet-content {
 	animation: orbit 20s linear infinite;
 	animation-direction: reverse;
