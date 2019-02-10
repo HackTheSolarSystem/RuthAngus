@@ -14,7 +14,7 @@ function Game(querySelector) {
 	this.canvas.addEventListener("mousemove", this._boundMouseEvent);
 	this.canvas.addEventListener("mouseup", this._boundMouseEvent);
 
-	this.probeButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Probe", function() {
+	this.probeButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Probe", function () {
 		var stars = window.game.stars;
 		var selectedStar;
 		for (var starIndex in stars) {
@@ -31,13 +31,13 @@ function Game(querySelector) {
 			window.game.probesLeft -= 1;
 
 			if (window.game.probesLeft == 0) {
-				window.game.startResearchPrompt();			
+				window.game.startResearchPrompt();
 			}
 		} else {
-			alert("You must select a star to probe.");
+			$('#must-select-planet').modal()
 		}
 	});
-	this.researchButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Research", function() {
+	this.researchButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Research", function () {
 		var stars = window.game.stars;
 		var selectedStar;
 		var selectedStarIndex;
@@ -57,13 +57,13 @@ function Game(querySelector) {
 
 		if (selectedStar) {
 			if (selectedStarIndex == lowestFrequencyIndex) {
-				alert("You win");
+				$('#win-modal').modal()
 			} else {
-				alert("You lose");
+				$('#lose-modal').modal()
 			}
 			game.startRound();
 		} else {
-			alert("You must select a star to pursue research on.");
+			$('#must-select-planet').modal()
 		}
 	});
 	this.researchButton.enabled = false;
@@ -72,7 +72,7 @@ function Game(querySelector) {
 	this.ui.push(this.researchButton);
 }
 
-Game.prototype.loadAssets = function(callback) {
+Game.prototype.loadAssets = function (callback) {
 	this.loader = new PxLoader();
 	this.loader.addCompletionListener(callback);
 	this.assets = {
@@ -84,7 +84,7 @@ Game.prototype.loadAssets = function(callback) {
 	this.loader.start();
 };
 
-Game.prototype.startRound = function() {
+Game.prototype.startRound = function () {
 	this.state = STATE_PROBE;
 	this.probesLeft = PROBE_COUNT_MAX;
 	this.stars = [];
@@ -93,11 +93,11 @@ Game.prototype.startRound = function() {
 	}
 };
 
-Game.prototype.startResearchPrompt = function() {
+Game.prototype.startResearchPrompt = function () {
 	this.state = STATE_GUESS;
 	this.probeButton.enabled = false;
 	// please don't write code like this ever
-	setTimeout((function() {
+	setTimeout((function () {
 		this.researchButton.enabled = true;
 	}).bind(this), 200);
 	for (var starIndex in this.stars) {
@@ -109,7 +109,7 @@ Game.prototype.startResearchPrompt = function() {
 	}
 };
 
-Game.prototype.onMouseEvent = function(e) {
+Game.prototype.onMouseEvent = function (e) {
 	var rect = this.canvas.getBoundingClientRect();
 
 	this.mouse.x = e.clientX - rect.left;
@@ -117,7 +117,7 @@ Game.prototype.onMouseEvent = function(e) {
 	this.mouse.down = (e.buttons == 1);
 };
 
-Game.prototype.drawFrame = function() {
+Game.prototype.drawFrame = function () {
 	//
 	// update
 	//
@@ -182,11 +182,11 @@ Game.prototype.drawFrame = function() {
 	requestAnimationFrame(this._boundDrawFrame);
 };
 
-window.addEventListener("load", function() {
-	particlesJS.load("particles", window.BASE_URL + "/public/particlesjs-config.json", function() {});
+window.addEventListener("load", function () {
+	particlesJS.load("particles", window.BASE_URL + "/public/particlesjs-config.json", function () { });
 
 	window.game = new Game("canvas");
-	game.loadAssets(function() {
+	game.loadAssets(function () {
 		document.querySelector("#loadingCover").remove();
 		game.startRound();
 		game.drawFrame();
