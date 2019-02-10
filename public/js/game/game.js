@@ -27,25 +27,45 @@ function Game(querySelector) {
 		if (selectedStar) {
 			selectedStar.probe();
 
-			window.game.laserShotsLeft -= 1;
+			window.game.probesLeft -= 1;
 
-			if (window.game.laserShotsLeft == 0) {
-				window.game.state = STATE_GUESS;
-				window.game.probeButton.enabled = false;
+			if (window.game.probesLeft == 0) {
+				window.game.startResearchPrompt();			
 			}
 		} else {
 			alert("You must select a star.");
 		}
 	});
+	this.researchButton = new Button(this, (CANVAS_WIDTH - 100) / 2, CANVAS_HEIGHT - 30 - 10, "Research", function() {
+		alert("science");
+	});
+	this.researchButton.enabled = false;
 
 	this.ui.push(this.probeButton);
+	this.ui.push(this.researchButton);
 }
 
 Game.prototype.startRound = function() {
-	this.laserShotsLeft = 3;
+	this.probesLeft = PROBE_COUNT_MAX;
 	this.stars = [];
-	for (var i = 0; i < 5; i++) {
+	for (var i = 0; i < STAR_COUNT; i++) {
 		this.stars.push(new Star(this));
+	}
+};
+
+Game.prototype.startResearchPrompt = function() {
+	this.state = STATE_GUESS;
+	this.probeButton.enabled = false;
+	// please don't write code like this ever
+	setTimeout((function() {
+		this.researchButton.enabled = true;
+	}).bind(this), 200);
+	for (var starIndex in this.stars) {
+		var star = this.stars[starIndex];
+		star.frozen = true;
+		if (star.probed) {
+			star.researchable = true;
+		}
 	}
 };
 
@@ -93,9 +113,9 @@ Game.prototype.drawFrame = function() {
 
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "bottom";
-		this.ctx.fillText("Shots left: " + this.laserShotsLeft, 10, CANVAS_HEIGHT - 10);
+		this.ctx.fillText("Probes left: " + this.probesLeft, 10, CANVAS_HEIGHT - 10);
 	} else if (this.state == STATE_GUESS) {
-		this.ctx.fillText("Where do you want to pursue research?", CANVAS_WIDTH / 2, 10 + 8);
+		this.ctx.fillText("Where do you want to pursue research? Select a star.", CANVAS_WIDTH / 2, 10 + 8);
 	}
 
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
