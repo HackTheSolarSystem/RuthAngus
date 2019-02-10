@@ -1,3 +1,8 @@
+html, body {
+	font-family: "Quicksand", sans-serif;
+	font-weight: 500;
+}
+
 .particles {
 	background: radial-gradient(ellipse at bottom, #1C2837 0%, #050608 100%);
 	color: white;

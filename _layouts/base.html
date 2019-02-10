@@ -3,18 +3,19 @@
 
 <head>
 	<title>Ruth Angus</title>
+
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{ site.baseurl }}/public/page.css">
+	{% for file in page.css %}
+		<link href="{{ site.baseurl }}/{{ file }}" rel="stylesheet" />
+	{% endfor %}
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-	{% if page.url == "/" %}
-	<script src="{{site.baseurl}}/public/index.js"></script>
-	<link rel="stylesheet" href="{{site.baseurl}}/public/index.css">
-	{% endif %}
-	{% if page.url == "/timeline.html" %}
-	<link rel="stylesheet" href="{{site.baseurl}}/public/timeline.css">
-	{% endif %}
-	<link rel="stylesheet" href="{{site.baseurl}}/public/page.css">
+	{% for file in page.js %}
+		<script src="{{ site.baseurl }}/{{ file }}"></script>
+	{% endfor %}
 </head>
 
 <body>
