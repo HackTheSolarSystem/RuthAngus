@@ -5,4 +5,4 @@ Toasty The Toaster consists of [William Barkoff](https://williambarkoff.com), [A
 
 ## Starting a Development Server
 
-To start a development server, clone the repo, then run `bundle install`, then `bundle exec jekyll serve` and navigate to [localhost:4000/RuthAngus](http://localhost:4000/RuthAngus)
+To start a development server, clone the repo, then run `bundle install`, then `bundle exec jekyll serve` and navigate to [localhost:4000/RuthAngus/](http://localhost:4000/RuthAngus/)
