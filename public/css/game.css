@@ -8,4 +8,5 @@ html, body {
 	margin: 1rem auto;
 	width: 800px;
 	height: 400px;
+	cursor: none;
 }
