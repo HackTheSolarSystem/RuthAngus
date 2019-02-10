@@ -1,17 +1,16 @@
+html, body {
+	font-family: "Quicksand", sans-serif;
+	font-weight: 500;
+}
+
 .top {
 	height: 100vh;
 	background: radial-gradient(ellipse at bottom, #1C2837 0%, #050608 100%);
 	position: relative;
 }
 
-.planet {
-	animation: orbit 20s linear infinite;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-}
-
 .sun {
+	color: white;
 	height: 7rem;
 	width: 7rem;
 	position: absolute;
@@ -25,11 +24,18 @@
 	text-align: center;
 }
 
+.planet {
+	animation: orbit 20s linear infinite;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
 .planet .planet-content {
 	animation: orbit 20s linear infinite;
 	animation-direction: reverse;
 	border-radius: 50%;
-	color: #212529;
+	color: white;
 	display: block;
 	line-height: 5rem;
 	margin: 0 auto;
