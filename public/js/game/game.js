@@ -89,13 +89,13 @@ Game.prototype.drawFrame = function() {
 	this.ctx.textAlign = "center";
 	this.ctx.textBaseline = "middle";
 	if (this.state == STATE_PROBE) {
-		this.ctx.fillText("Select a star to probe at", CANVAS_WIDTH / 2, 10 + 8);
+		this.ctx.fillText("Select a star to probe", CANVAS_WIDTH / 2, 10 + 8);
 
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "bottom";
 		this.ctx.fillText("Shots left: " + this.laserShotsLeft, 10, CANVAS_HEIGHT - 10);
 	} else if (this.state == STATE_GUESS) {
-		this.ctx.fillText("Guess stuff", CANVAS_WIDTH / 2, 10 + 8);
+		this.ctx.fillText("Where do you want to pursue research?", CANVAS_WIDTH / 2, 10 + 8);
 	}
 
 	this.ctx.fillStyle = (this.mouse.down ? "green" : "red");
@@ -111,6 +111,8 @@ Game.prototype.drawFrame = function() {
 };
 
 window.addEventListener("load", function() {
+	particlesJS.load("particles", window.BASE_URL + "/public/particlesjs-config.json", function() {});
+
 	window.game = new Game("canvas");
 	game.startRound();
 	game.drawFrame();
