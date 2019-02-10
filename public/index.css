@@ -84,7 +84,7 @@ html, body {
 
 #planet3 .planet-content {
 	animation-duration: 25s;
-	background: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
+	background: linear-gradient(120deg, #4facfe 0%, #00f2fe 100%);
 }
 
 @keyframes orbit {
@@ -104,7 +104,7 @@ html, body {
 		position: initial;
 		margin: 0;
 	}
-	.planet {
+	.planet, #planet1.planet, #planet2.planet, #planet3.planet {
 		position: initial;
 		animation: none;
 		margin: 1rem 0 0 0;
