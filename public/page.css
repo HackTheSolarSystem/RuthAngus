@@ -10,6 +10,7 @@ html, body {
 
 #header {
 	position: relative;
+	height: 30vh;
 }
 
 #header>.particles-js-canvas-el {
@@ -27,4 +28,9 @@ html, body {
 
 .top-container {
 	z-index: 2;
+	position: absolute;
+	left: 10%;
+	right: 10%;
+	top: 30%;
+	bottom: 30%;
 }
